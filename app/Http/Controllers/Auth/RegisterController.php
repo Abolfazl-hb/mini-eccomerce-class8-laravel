@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Http\Controllers\Auth;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\RegisterPostRequest;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+
+class RegisterController extends Controller
+{
+    public function index()
+    {
+        $withoutFooter = true;
+        $withoutHeader = true;
+
+        $title = "ثبت نام";
+
+        return view('auth.register', compact('withoutFooter', 'withoutHeader', 'title'));
+    }
+
+    public function post(RegisterPostRequest $request)
+    {
+        $inputs = $request->only([
+            "first_name",
+            "last_name",
+            "mobile",
+            "email"
+        ]);
+
+        $inputs['password'] = Hash::make($request->input('password'));
+
+        $user = User::create($inputs);
+
+        Auth::login($user);
+
+        return redirect()->route('index');
+    }
+}
