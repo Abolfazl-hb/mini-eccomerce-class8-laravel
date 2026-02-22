@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
+use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 
 class IndexController extends Controller
@@ -10,6 +12,21 @@ class IndexController extends Controller
     {
         $title = "صفحه اصلی";
 
-        return view('index', compact('title'));
+        $productCategories = ProductCategory::query()
+            ->limit(6)
+            ->get();
+
+        $newestProducts = Product::query()
+            ->orderByDesc('created_at')
+            ->limit(5)
+            ->get();
+
+        $bestSellingProducts = Product::query()
+            ->withSum('orderItems', 'qty')
+            ->orderByDesc('order_items_sum_qty')
+            ->limit(5)
+            ->get();
+
+        return view('index', compact('title', 'productCategories', 'newestProducts', 'bestSellingProducts'));
     }
 }
