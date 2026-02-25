@@ -55,3 +55,10 @@ if(!function_exists('activeAccountSidebar')) {
         return 'hover:text-blue-500';
     }
 }
+
+if(!function_exists('getUserCartCount')) {
+    function getUserCartCount(): int
+    {
+        return \App\Services\CartService::getCount();
+    }
+}

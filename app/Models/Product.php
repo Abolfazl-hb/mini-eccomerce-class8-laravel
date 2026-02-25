@@ -66,7 +66,7 @@ class Product extends Model
     {
         $request = request();
 
-        if ($request->filled('sort')) {
+//        if ($request->filled('sort')) {
             switch ($request->input('sort')) {
                 case 'best_selling': {
                     $query
@@ -86,7 +86,7 @@ class Product extends Model
                     $query->orderByDesc('created_at');
                 }
             }
-        }
+//        }
     }
 
     #[Scope]
